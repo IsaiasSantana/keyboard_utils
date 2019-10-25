@@ -1,8 +1,24 @@
 import Flutter
 import UIKit
 
-public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHandler {
+struct KeyboardOptions: Encodable {
+    let isKeyboardOpen: Bool
+    let keyboardHeight: Double
     
+    enum CodingKeys: String, CodingKey {
+        
+        case isKeyboardOpen
+        case keyboardHeight
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(isKeyboardOpen, forKey: .isKeyboardOpen)
+        try container.encode(keyboardHeight, forKey: .keyboardHeight)
+    }
+}
+
+public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHandler {
     private var eventSink: FlutterEventSink?
     private var isKeyboardOpen = false
     private var isListening = false
@@ -17,11 +33,6 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
         let eventChannel = FlutterEventChannel(name: "keyboard_utils", binaryMessenger: registrar.messenger())
         let instance = SwiftKeyboardUtilsPlugin()
         eventChannel.setStreamHandler(instance)
-    }
-
-    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-
-        result("iOS " + UIDevice.current.systemVersion)
     }
     
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
