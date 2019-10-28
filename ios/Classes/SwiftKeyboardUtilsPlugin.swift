@@ -11,6 +11,7 @@ import UIKit
 public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHandler {
     private var eventSink: FlutterEventSink?
     private var isKeyboardOpen = false
+    private var previewsKeyboardHeight = 0.0
 
     public override init() {
         super.init()
@@ -63,14 +64,36 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
     }
 
     @objc private func checkIsKeyboardOpen(notification: Notification) {
-        if !isKeyboardOpen {
-            isKeyboardOpen = true
+        func keyboardHeight() -> Double? {
             if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
                 let keyboardRectangle = keyboardFrame.cgRectValue
-                let keyboardHeight = keyboardRectangle.height
-                let keyboardOptions = KeyboardOptions(isKeyboardOpen: true, keyboardHeight: Double(keyboardHeight))
+                return Double(keyboardRectangle.height)
+            }
+            return nil
+        }
+
+        if !isKeyboardOpen {
+            isKeyboardOpen = true
+            if let keyboardHeight = keyboardHeight() {
+                let keyboardOptions = KeyboardOptions(isKeyboardOpen: true,
+                                                      keyboardHeight: Double(keyboardHeight))
+
+                previewsKeyboardHeight = keyboardHeight;
                 if let jsonString = convertToJson(keyboardOptions: keyboardOptions) {
-                   eventSink?(jsonString)
+                    eventSink?(jsonString)
+                }
+            }
+            return
+        }
+
+        if isKeyboardOpen, let keyboardHeight = keyboardHeight(){
+            if previewsKeyboardHeight != keyboardHeight {
+                let keyboardOptions = KeyboardOptions(isKeyboardOpen: true,
+                                                      keyboardHeight: keyboardHeight)
+
+                previewsKeyboardHeight = keyboardHeight;
+                if let jsonString = convertToJson(keyboardOptions: keyboardOptions) {
+                    eventSink?(jsonString)
                 }
             }
         }

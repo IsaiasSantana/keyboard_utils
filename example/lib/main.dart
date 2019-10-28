@@ -37,7 +37,13 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: TextField(),
+          child: Column(
+            children: <Widget>[
+              TextField(),
+              TextField(keyboardType: TextInputType.number,),
+              TextField(),
+            ],
+          ),
         ),
       ),
     );
