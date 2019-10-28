@@ -17,16 +17,14 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    final KeyboardListener listener = KeyboardListener(
-      willHideKeyboard: () {
-        print('called -> willHideKeyboard()');
-      },
-      willShowKeyboard: (double keyboardHeight) {
-        print('willShowKeyboard() height: $keyboardHeight');
-      }
-    );
-
-    _keyboardUtils.add(listener: listener);
+    _keyboardUtils.add(listener: KeyboardListener(
+        willHideKeyboard: () {
+          print('called -> willHideKeyboard()');
+        },
+        willShowKeyboard: (double keyboardHeight) {
+          print('willShowKeyboard() height: $keyboardHeight');
+        }
+    ));
   }
 
   @override
