@@ -2,6 +2,8 @@ name: keyboard_utils_example
 description: Demonstrates how to use the keyboard_utils plugin.
 publish_to: 'none'
 
+version: 0.0.1+0.0.1
+
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
