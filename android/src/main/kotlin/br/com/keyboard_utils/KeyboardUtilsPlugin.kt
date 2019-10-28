@@ -19,6 +19,10 @@ class KeyboardUtilsPlugin(activity: Activity) : EventChannel.StreamHandler {
 
   private val keyboardUtil: KeyboardUtils = KeyboardUtilsImpl(activity)
 
+  init {
+    keyboardUtil.start()
+  }
+
   override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
     keyboardUtil.onKeyboardOpen {
       val resultJSON = KeyboardOptions(isKeyboardOpen = true, height = it)
