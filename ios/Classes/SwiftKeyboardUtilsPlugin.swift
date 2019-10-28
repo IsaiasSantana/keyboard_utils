@@ -11,7 +11,7 @@ import UIKit
 public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHandler {
     private var eventSink: FlutterEventSink?
     private var isKeyboardOpen = false
-    
+
     public override init() {
         super.init()
 
@@ -23,14 +23,12 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
         let instance = SwiftKeyboardUtilsPlugin()
         eventChannel.setStreamHandler(instance)
     }
-    
+
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         eventSink = events;
-        
         if isKeyboardOpen {
             events(true)
         }
-
         return nil
     }
 
@@ -51,25 +49,16 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
                                                object: nil)
 
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyBoardDidShow),
+                                               selector: #selector(keyboardDidShow),
                                                name: NSNotification.Name.UIKeyboardDidShow,
                                                object: nil)
     }
 
-    private func unregisterEvenst() {
-        guard eventSink != nil else {
-            return
-        }
-
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func convertKeyboardOptionsToString(_ keyboardOptions: KeyboardOptions) -> String? {
+    private func convertToJson(keyboardOptions: KeyboardOptions) -> String? {
        if let encodedData = try? JSONEncoder().encode(keyboardOptions),
             let jsonString = String(data: encodedData, encoding: .utf8) {
             return jsonString
         }
-        
         return nil
     }
 
@@ -80,14 +69,14 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
                 let keyboardRectangle = keyboardFrame.cgRectValue
                 let keyboardHeight = keyboardRectangle.height
                 let keyboardOptions = KeyboardOptions(isKeyboardOpen: true, keyboardHeight: Double(keyboardHeight))
-                if let jsonString = convertKeyboardOptionsToString(keyboardOptions) {
+                if let jsonString = convertToJson(keyboardOptions: keyboardOptions) {
                    eventSink?(jsonString)
                 }
             }
         }
     }
 
-    @objc private func keyBoardDidShow(notification: Notification) {
+    @objc private func keyboardDidShow(notification: Notification) {
         checkIsKeyboardOpen(notification: notification)
     }
 
@@ -99,9 +88,14 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
         if isKeyboardOpen {
             isKeyboardOpen = false
             let keyboardOptions = KeyboardOptions(isKeyboardOpen: false, keyboardHeight: 0.0)
-            if let jsonString = convertKeyboardOptionsToString(keyboardOptions) {
+            if let jsonString = convertToJson(keyboardOptions: keyboardOptions) {
                eventSink?(jsonString)
             }
         }
+    }
+
+    deinit {
+        eventSink = nil
+        NotificationCenter.default.removeObserver(self)
     }
 }

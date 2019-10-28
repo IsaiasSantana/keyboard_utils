@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:keyboard_utils/keyboard_utils.dart';
+import 'package:keyboard_utils/keyboard_listener.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +11,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
   KeyboardUtils  _keyboardUtils = KeyboardUtils();
 
   @override
@@ -21,10 +19,10 @@ class _MyAppState extends State<MyApp> {
 
     final KeyboardListener listener = KeyboardListener(
       willHideKeyboard: () {
-
+        print('called -> willHideKeyboard()');
       },
-      willShowKeyboard: () {
-
+      willShowKeyboard: (double keyboardHeight) {
+        print('willShowKeyboard() height: $keyboardHeight');
       }
     );
 
@@ -43,5 +41,12 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _keyboardUtils.dispose();
+
+    super.dispose();
   }
 }
