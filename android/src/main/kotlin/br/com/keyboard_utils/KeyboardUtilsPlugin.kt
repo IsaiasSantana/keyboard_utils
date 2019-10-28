@@ -1,25 +1,39 @@
 package br.com.keyboard_utils
 
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
+import android.app.Activity
+import br.com.keyboard_utils.manager.KeyboardOptions
+import br.com.keyboard_utils.manager.KeyboardUtils
+import br.com.keyboard_utils.manager.KeyboardUtilsImpl
+import br.com.keyboard_utils.utils.KeyboardConstants.Companion.CHANNEL_IDENTIFIER
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.PluginRegistry
 
-class KeyboardUtilsPlugin: MethodCallHandler {
+class KeyboardUtilsPlugin(activity: Activity) : EventChannel.StreamHandler {
   companion object {
     @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "keyboard_utils")
-      channel.setMethodCallHandler(KeyboardUtilsPlugin())
+    fun registerWith(registrar: PluginRegistry.Registrar) {
+      val channel = EventChannel(registrar.view(), CHANNEL_IDENTIFIER)
+      channel.setStreamHandler(KeyboardUtilsPlugin(registrar.activity()))
     }
   }
 
-  override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+  private val keyboardUtil: KeyboardUtils = KeyboardUtilsImpl(activity)
+
+  init {
+    keyboardUtil.start()
+  }
+
+  override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+    keyboardUtil.onKeyboardOpen {
+      val resultJSON = KeyboardOptions(isKeyboardOpen = true, height = it)
+      events?.success(resultJSON.toJson())
+    }
+
+    keyboardUtil.onKeyboardClose {
+      val resultJSON = KeyboardOptions(isKeyboardOpen = false, height = 0)
+      events?.success(resultJSON.toJson())
     }
   }
+
+  override fun onCancel(arguments: Any?) {}
 }
