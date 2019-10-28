@@ -1,25 +1,22 @@
 package br.com.keyboard_utils
 
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
+import br.com.keyboard_utils.manager.KeyboardEventChannel
+import br.com.keyboard_utils.manager.KeyboardUtils
+import br.com.keyboard_utils.manager.KeyboardUtilsImpl
+import br.com.keyboard_utils.utils.KeyboardConstants.Companion.CHANNEL_IDENTIFIER
+import io.flutter.app.FlutterActivity
+import io.flutter.plugin.common.EventChannel
 
-class KeyboardUtilsPlugin: MethodCallHandler {
+class KeyboardUtilsPlugin {
   companion object {
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "keyboard_utils")
-      channel.setMethodCallHandler(KeyboardUtilsPlugin())
-    }
-  }
+    fun registerWith(flutterActivity: FlutterActivity) {
+      val keyboardUtilsPlugin: KeyboardUtils = KeyboardUtilsImpl(flutterActivity)
+      keyboardUtilsPlugin.start()
 
-  override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+      EventChannel(
+              flutterActivity.flutterView,
+              CHANNEL_IDENTIFIER
+      ).setStreamHandler(KeyboardEventChannel(keyboardUtilsPlugin))
     }
   }
 }
