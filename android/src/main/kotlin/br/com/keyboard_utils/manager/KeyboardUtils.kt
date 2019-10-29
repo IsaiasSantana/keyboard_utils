@@ -29,7 +29,7 @@ interface KeyboardUtils {
     fun onKeyboardClose(action: () -> Unit)
 }
 
-class KeyboardUtilsImpl(activity: Activity) : PopupWindow(activity), KeyboardUtils {
+class KeyboardUtilsImpl(private val activity: Activity) : PopupWindow(activity), KeyboardUtils {
 
     // keyboard popup view
     private val keyboardView: View
@@ -80,7 +80,18 @@ class KeyboardUtilsImpl(activity: Activity) : PopupWindow(activity), KeyboardUti
             override fun onFinish() {
                 keyboardSessionHeights.max()?.let {
                     if (it > 0 && lastKeyboardHeight != it) {
-                        keyboardOpenedEvent(it)
+                        var statusBar = 0
+                        var alturaFinal = it
+                        val resources = activity.resources
+                        val resourceId = resources.getIdentifier(
+                                "status_bar_height", "dimen", "android")
+                        if (resourceId > 0) {
+                            statusBar = resources.getDimensionPixelSize(resourceId)
+                        }
+                        if (statusBar > 100) {
+                            alturaFinal += statusBar
+                        }
+                        keyboardOpenedEvent(alturaFinal)
                         lastKeyboardHeight = -1
                     } else if (it == 0) {
                         keyboardClosedEvent()

@@ -1,8 +1,8 @@
 # keyboard_utils
 
-A Flutter plugin for check the keyboard visibility.
+A Flutter plugin for check the keyboard visibility and size.
 
-![sample](doc/gif.gif)
+![sample](https://i.imgur.com/OgictdS.gif)
 
 ## Install
 
@@ -34,3 +34,13 @@ _keyboardUtils.add(listener: KeyboardListener(
 ```
 
 Check the sample for more details.
+
+## Authors
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/IsaiasSantana"><img src="https://avatars3.githubusercontent.com/u/18197600?s=460&v=4" width="100px;" alt="Isaías Santana"/><br /><sub><b>Isaías Santana</b></td>
+ 
+   <td align="center"><a href="https://github.com/wilfilho"><img src="https://avatars2.githubusercontent.com/u/4473670?s=400&v=4" width="100px;" alt="Will Filho"/><br /><sub><b>Will Filho</b></td>
+  </tr>
+</table>
