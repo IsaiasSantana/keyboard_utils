@@ -9,21 +9,19 @@ void main() => runApp(MyApp());
 
 // Sample Bloc
 class KeyboardBloc {
-  KeyboardUtils  _keyboardUtils = KeyboardUtils();
+  KeyboardUtils _keyboardUtils = KeyboardUtils();
   StreamController<double> _streamController = StreamController<double>();
   Stream<double> get stream => _streamController.stream;
 
   KeyboardUtils get keyboardUtils => _keyboardUtils;
 
   void start() {
-    _keyboardUtils.add(listener: KeyboardListener(
-        willHideKeyboard: () {
-          _streamController.sink.add(_keyboardUtils.keyboardHeight);
-        },
-        willShowKeyboard: (double keyboardHeight) {
-          _streamController.sink.add(keyboardHeight);
-        }
-    ));
+    _keyboardUtils.add(
+        listener: KeyboardListener(willHideKeyboard: () {
+      _streamController.sink.add(_keyboardUtils.keyboardHeight);
+    }, willShowKeyboard: (double keyboardHeight) {
+      _streamController.sink.add(keyboardHeight);
+    }));
   }
 
   void dispose() {
@@ -39,7 +37,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   KeyboardBloc _bloc = KeyboardBloc();
 
   @override
@@ -60,14 +57,21 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: <Widget>[
               TextField(),
-              TextField(keyboardType: TextInputType.number,),
+              TextField(
+                keyboardType: TextInputType.number,
+              ),
               TextField(),
-              SizedBox(height: 30,),
-              StreamBuilder<double>(stream: _bloc.stream,
-                builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-                  return Text('is keyboard open: ${_bloc.keyboardUtils.isKeyboardOpen}\n'
-                  'Height: ${_bloc.keyboardUtils.keyboardHeight}');
-              }),
+              SizedBox(
+                height: 30,
+              ),
+              StreamBuilder<double>(
+                  stream: _bloc.stream,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<double> snapshot) {
+                    return Text(
+                        'is keyboard open: ${_bloc.keyboardUtils.isKeyboardOpen}\n'
+                        'Height: ${_bloc.keyboardUtils.keyboardHeight}');
+                  }),
             ],
           ),
         ),
