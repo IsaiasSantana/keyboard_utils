@@ -6,10 +6,7 @@ A Flutter plugin for check the keyboard visibility.
 
 ## Install
 
-Add the dependency to your pubspec.yaml
-```
-keyboard_utils: ^[CURRENT_VERSION]
-```
+Follow this [guide](https://pub.dev/packages/keyboard_utils/#-installing-tab-) 
 
 ## How to use
 
