@@ -1,8 +1,8 @@
 name: keyboard_utils
-description: A new Flutter plugin for check visibility keyboard
+description: A new Flutter plugin for check visibility keyboard.
 version: 0.0.1
-author:
-homepage:
+author: Isaías Santana <isds.santana@gmail.com>
+homepage: https://github.com/IsaiasSantana/keyboard_utils
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
