@@ -2,7 +2,7 @@
 
 A Flutter plugin for check the keyboard visibility.
 
-![Running on Android and iOS](https://i.imgur.com/shWxH5v.gif =630x)
+![sample](https://i.imgur.com/OgictdS.gif)
 
 ## Install
 
@@ -37,5 +37,10 @@ Check the sample for more details.
 
 ## Authors
 
- - [Isaias Santana](http://github.com/isaiasSantana) (ios implementation)
- - [Wilson Martins](https://github.com/wilfilho) (android implementation)
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/IsaiasSantana"><img src="https://avatars3.githubusercontent.com/u/18197600?s=460&v=4" width="100px;" alt="Isaías Santana"/><br /><sub><b>Isaías Santana</b></td>
+ 
+   <td align="center"><a href="https://github.com/wilfilho"><img src="https://avatars2.githubusercontent.com/u/4473670?s=400&v=4" width="100px;" alt="Will Filho"/><br /><sub><b>Will Filho</b></td>
+  </tr>
+</table>
