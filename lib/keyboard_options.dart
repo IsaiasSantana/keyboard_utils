@@ -4,8 +4,8 @@ class KeyboardOptions {
   final bool isKeyboardOpen;
   final double keyboardHeight;
 
-  KeyboardOptions.fromJson(Map<String, dynamic> json) :
-        isKeyboardOpen = json['isKeyboardOpen'],
+  KeyboardOptions.fromJson(Map<String, dynamic> json)
+      : isKeyboardOpen = json['isKeyboardOpen'],
         keyboardHeight = json['keyboardHeight'].toDouble();
 
   Map<String, dynamic> toJson() {
@@ -14,5 +14,4 @@ class KeyboardOptions {
       'keyboardHeight': keyboardHeight,
     };
   }
-
 }

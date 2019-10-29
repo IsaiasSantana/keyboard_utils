@@ -8,9 +8,8 @@ import 'keyboard_options.dart';
 
 class KeyboardUtils {
   KeyboardUtils() {
-    _keyboardSubscription ??= _eventChannel
-        .receiveBroadcastStream()
-        .listen(_onKeyboardListener);
+    _keyboardSubscription ??=
+        _eventChannel.receiveBroadcastStream().listen(_onKeyboardListener);
   }
 
   static const EventChannel _eventChannel = EventChannel('keyboard_utils');
@@ -39,7 +38,8 @@ class KeyboardUtils {
         final Map<String, dynamic> keyboardOptionsMap = jsonDecode(data);
         _keyboardOptions = KeyboardOptions.fromJson(keyboardOptionsMap);
 
-        if (_keyboardOptions.isKeyboardOpen && _keyboardListener?.willShowKeyboard != null) {
+        if (_keyboardOptions.isKeyboardOpen &&
+            _keyboardListener?.willShowKeyboard != null) {
           _keyboardListener.willShowKeyboard(_keyboardOptions.keyboardHeight);
           return;
         }
