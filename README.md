@@ -1,6 +1,6 @@
 # keyboard_utils
 
-A Flutter plugin for check the keyboard visibility.
+A Flutter plugin for check the keyboard visibility and size.
 
 ![sample](https://i.imgur.com/OgictdS.gif)
 
