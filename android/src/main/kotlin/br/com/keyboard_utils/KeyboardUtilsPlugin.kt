@@ -5,10 +5,11 @@ import br.com.keyboard_utils.manager.KeyboardOptions
 import br.com.keyboard_utils.manager.KeyboardUtils
 import br.com.keyboard_utils.manager.KeyboardUtilsImpl
 import br.com.keyboard_utils.utils.KeyboardConstants.Companion.CHANNEL_IDENTIFIER
+import br.com.keyboard_utils.utils.toDp
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.PluginRegistry
 
-class KeyboardUtilsPlugin(activity: Activity) : EventChannel.StreamHandler {
+class KeyboardUtilsPlugin(private val activity: Activity) : EventChannel.StreamHandler {
   companion object {
     @JvmStatic
     fun registerWith(registrar: PluginRegistry.Registrar) {
@@ -25,7 +26,7 @@ class KeyboardUtilsPlugin(activity: Activity) : EventChannel.StreamHandler {
 
   override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
     keyboardUtil.onKeyboardOpen {
-      val resultJSON = KeyboardOptions(isKeyboardOpen = true, height = it)
+      val resultJSON = KeyboardOptions(isKeyboardOpen = true, height = it.toDp(activity))
       events?.success(resultJSON.toJson())
     }
 
