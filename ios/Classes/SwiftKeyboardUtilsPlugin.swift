@@ -28,7 +28,12 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         eventSink = events;
         if isKeyboardOpen {
-            events(true)
+            let keyboardOptions = KeyboardOptions(isKeyboardOpen: true,
+                                                  keyboardHeight: previewsKeyboardHeight)
+
+            if let jsonString = convertToJson(keyboardOptions: keyboardOptions) {
+                eventSink?(jsonString)
+            }
         }
         return nil
     }
