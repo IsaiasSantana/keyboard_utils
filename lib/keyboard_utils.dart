@@ -44,7 +44,8 @@ class KeyboardUtils {
           return;
         }
 
-        if (_keyboardListener?.willHideKeyboard != null) {
+        if (!_keyboardOptions.isKeyboardOpen &&
+            _keyboardListener?.willHideKeyboard != null) {
           _keyboardListener.willHideKeyboard();
         }
       } on Exception catch (_) {}
