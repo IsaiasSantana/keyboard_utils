@@ -1,3 +1,7 @@
+## 0.0.4
+
+* Add conversion to dp to Android keyboard height.
+
 ## 0.0.3
 
 * Upgrade kotlin version
