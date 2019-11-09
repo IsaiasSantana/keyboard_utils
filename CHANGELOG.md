@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Update version.
+
 ## 0.0.4
 
 * Add conversion to dp to Android keyboard height.
