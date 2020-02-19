@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Update Swift version.
+
 ## 1.0.0
 
 * Update version.
