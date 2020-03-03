@@ -15,8 +15,10 @@ class KeyboardBloc {
 
   KeyboardUtils get keyboardUtils => _keyboardUtils;
 
+  int _idKeyboardListener;
+
   void start() {
-    _keyboardUtils.add(
+    _idKeyboardListener = _keyboardUtils.add(
         listener: KeyboardListener(willHideKeyboard: () {
       _streamController.sink.add(_keyboardUtils.keyboardHeight);
     }, willShowKeyboard: (double keyboardHeight) {
@@ -25,7 +27,10 @@ class KeyboardBloc {
   }
 
   void dispose() {
-    _keyboardUtils.dispose();
+    _keyboardUtils.unsubscribeListener(subscribingId: _idKeyboardListener);
+    if (_keyboardUtils.canCallDispose()) {
+      _keyboardUtils.dispose();
+    }
     _streamController.close();
   }
 }
