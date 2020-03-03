@@ -20,7 +20,7 @@ class KeyboardUtils {
   static Map<int, KeyboardListener> _listenersKeyboardEvents =
       Map<int, KeyboardListener>();
 
-  KeyboardOptions _keyboardOptions;
+  static KeyboardOptions _keyboardOptions;
 
   /// the current height of the keyboard. if keyboard is closed, the height is 0.0.
   double get keyboardHeight => _keyboardOptions?.keyboardHeight ?? 0.0;
