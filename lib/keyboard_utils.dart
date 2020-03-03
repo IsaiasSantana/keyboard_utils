@@ -44,6 +44,10 @@ class KeyboardUtils {
   /// Unsubscribe from the keyboard visibility events
   /// [subscribingId] An id previously returned on add
   bool unsubscribeListener({@required int subscribingId}) {
+    if (subscribingId == null) {
+      return false;
+    }
+
     if (_listenersKeyboardEvents.isEmpty) {
       return false;
     }
@@ -86,9 +90,13 @@ class KeyboardUtils {
     }
   }
 
+  bool canCallDispose() {
+    return _listenersKeyboardEvents.isEmpty;
+  }
+
   ///  function to clear class on dispose.
   void dispose() {
-    if (_listenersKeyboardEvents.isEmpty) {
+    if (canCallDispose()) {
       _keyboardSubscription?.cancel()?.catchError((e) {});
       _keyboardSubscription = null;
     }
