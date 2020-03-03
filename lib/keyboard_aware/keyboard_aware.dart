@@ -15,22 +15,27 @@ class KeyboardAware extends StatefulWidget {
 
 class _KeyboardAwareState extends State<KeyboardAware> {
   final KeyboardUtils _keyboardUtils = KeyboardUtils();
+  int _idKeyboardListener;
 
   @override
   void initState() {
     super.initState();
 
-    _inicializarListenerTeclado();
+    _initKeyboardListener();
   }
 
   @override
   void dispose() {
-    _keyboardUtils.dispose();
+    _keyboardUtils.unsubscribeListener(subscribingId: _idKeyboardListener);
+    if (_keyboardUtils.canCallDispose()) {
+      _keyboardUtils.dispose();
+    }
+
     super.dispose();
   }
 
-  void _inicializarListenerTeclado() {
-    _keyboardUtils.add(
+  void _initKeyboardListener() {
+    _idKeyboardListener = _keyboardUtils.add(
       listener: KeyboardListener(
         willHideKeyboard: () {
           setState(() {});
