@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:keyboard_utils/keyboard_utils.dart';
 import 'package:keyboard_utils/keyboard_listener.dart';
+import 'package:keyboard_utils/widgets.dart';
 
 void main() => runApp(MyApp());
 
@@ -51,6 +52,53 @@ class _MyAppState extends State<MyApp> {
     _bloc.start();
   }
 
+  Widget buildSampleUsingKeyboardAwareWidget() {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          TextField(),
+          TextField(
+            keyboardType: TextInputType.number,
+          ),
+          TextField(),
+          SizedBox(
+            height: 30,
+          ),
+          KeyboardAware(
+            builder: (context, keyboardConfig) {
+              return Text('is keyboard open: ${keyboardConfig.isKeyboardOpen}\n'
+                  'Height: ${keyboardConfig.keyboardHeight}');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildSampleUsingRawListener() {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          TextField(),
+          TextField(
+            keyboardType: TextInputType.number,
+          ),
+          TextField(),
+          SizedBox(
+            height: 30,
+          ),
+          StreamBuilder<double>(
+              stream: _bloc.stream,
+              builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                return Text(
+                    'is keyboard open: ${_bloc.keyboardUtils.isKeyboardOpen}\n'
+                    'Height: ${_bloc.keyboardUtils.keyboardHeight}');
+              }),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,28 +106,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Keyboard Utils Sample'),
         ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              TextField(),
-              TextField(
-                keyboardType: TextInputType.number,
-              ),
-              TextField(),
-              SizedBox(
-                height: 30,
-              ),
-              StreamBuilder<double>(
-                  stream: _bloc.stream,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<double> snapshot) {
-                    return Text(
-                        'is keyboard open: ${_bloc.keyboardUtils.isKeyboardOpen}\n'
-                        'Height: ${_bloc.keyboardUtils.keyboardHeight}');
-                  }),
-            ],
-          ),
-        ),
+        body: buildSampleUsingKeyboardAwareWidget(),
       ),
     );
   }
