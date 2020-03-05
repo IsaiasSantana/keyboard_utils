@@ -1,3 +1,10 @@
+## 1.2.0
+
+* Migrate to AndroidX.
+* Add new KeyboardAware widget.
+* Add new KeyboardConfigInheritedWidget widget.
+* Support more keyboard listeners.
+
 ## 1.1.0
 
 * Update Swift version.
