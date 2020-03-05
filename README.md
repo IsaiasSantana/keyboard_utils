@@ -27,9 +27,9 @@ Attach the listener to KeyboardUtils:
 ```dart
 final int _idKeyboardListener = _keyboardUtils.add(
         listener: KeyboardListener(willHideKeyboard: () {
-      _streamController.sink.add(_keyboardUtils.keyboardHeight);
+      // Your code here
     }, willShowKeyboard: (double keyboardHeight) {
-      _streamController.sink.add(keyboardHeight);
+      // You code here
     }));
 ```
 
