@@ -29,7 +29,7 @@ final int _idKeyboardListener = _keyboardUtils.add(
         listener: KeyboardListener(willHideKeyboard: () {
       // Your code here
     }, willShowKeyboard: (double keyboardHeight) {
-      // You code here
+      // Your code here
     }));
 ```
 
