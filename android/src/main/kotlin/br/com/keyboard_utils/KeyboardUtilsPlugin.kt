@@ -13,7 +13,7 @@ class KeyboardUtilsPlugin(private val activity: Activity) : EventChannel.StreamH
   companion object {
     @JvmStatic
     fun registerWith(registrar: PluginRegistry.Registrar) {
-      val channel = EventChannel(registrar.view(), CHANNEL_IDENTIFIER)
+      val channel = EventChannel(registrar.messenger(), CHANNEL_IDENTIFIER)
       channel.setStreamHandler(KeyboardUtilsPlugin(registrar.activity()))
     }
   }
