@@ -22,8 +22,8 @@ interface DeviceDimesions {
 }
 
 class DeviceDimesionsImpl(
-    private val activity: Activity,
-    private val keyboardView: View
+        private val activity: Activity,
+        private val keyboardView: View
 ) : DeviceDimesions {
     override fun keyboardHeight(): Int {
         val keyboardRect = Rect()
