@@ -25,15 +25,56 @@ KeyboardUtils  _keyboardUtils = KeyboardUtils();
 Attach the listener to KeyboardUtils:
 
 ```dart
-_keyboardUtils.add(listener: KeyboardListener(
-        willHideKeyboard: () {
-          _streamController.sink.add(_keyboardUtils.keyboardHeight);
-        },
-        willShowKeyboard: (double keyboardHeight) {
-          _streamController.sink.add(keyboardHeight);
-        }
-    ));
+final int _idKeyboardListener = _keyboardUtils.add(
+        listener: KeyboardListener(willHideKeyboard: () {
+      // Your code here
+    }, willShowKeyboard: (double keyboardHeight) {
+      // Your code here
+    }));
 ```
+
+Remember call dispose:
+```dart
+_keyboardUtils.unsubscribeListener(subscribingId: _idKeyboardListener);
+    if (_keyboardUtils.canCallDispose()) {
+      _keyboardUtils.dispose();
+    }
+```
+
+Instead, you can also use KeyboardAware Widget:
+
+```dart
+ import 'package:keyboard_utils/widgets.dart';
+ 
+ ....
+ 
+ Widget buildSampleUsingKeyboardAwareWidget() {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          TextField(),
+          TextField(
+            keyboardType: TextInputType.number,
+          ),
+          TextField(),
+          SizedBox(
+            height: 30,
+          ),
+          KeyboardAware(
+            builder: (context, keyboardConfig) {
+              return Text('is keyboard open: ${keyboardConfig.isKeyboardOpen}\n'
+                  'Height: ${keyboardConfig.keyboardHeight}');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+  
+  ....
+```
+
+To share KeyboardConfig in your widget tree, use the **KeyboardConfigInheritedWidget** widget.
 
 Check the sample for more details.
 
