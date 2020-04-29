@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Fix wrong name file.
+
 ## 1.2.0
 
 * Migrate to AndroidX.
