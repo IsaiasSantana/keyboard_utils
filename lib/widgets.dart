@@ -1,2 +1,2 @@
 export 'keyboard_aware/keyboard_aware.dart';
-export 'keyboard_aware/keyboard_config_ inherited_widget.dart';
+export 'keyboard_aware/keyboard_config_inherited_widget.dart';
