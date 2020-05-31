@@ -31,6 +31,7 @@ class KeyboardUtilsPlugin : FlutterPlugin, ActivityAware, EventChannel.StreamHan
     private fun tearDown() {
         eventChannel = null
         activityPluginBinding = null
+        keyboardUtil?.dispose()
         keyboardUtil = null
     }
 
