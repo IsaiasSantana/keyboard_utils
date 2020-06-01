@@ -18,6 +18,8 @@ import br.com.keyboard_utils.R
 interface KeyboardUtils {
     fun start()
 
+    fun dispose()
+
     fun registerKeyboardListener()
 
     fun registerKeyboardSettings()
@@ -125,6 +127,10 @@ class KeyboardUtilsImpl(private val activity: Activity) : PopupWindow(activity),
                 showAtLocation(parentView, Gravity.NO_GRAVITY, 0, 0)
             }
         }, 100)
+    }
+
+    override fun dispose() {
+        dismiss()
     }
 
     override fun registerKeyboardSettings() {

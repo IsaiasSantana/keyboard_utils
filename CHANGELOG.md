@@ -1,3 +1,8 @@
+## 1.2.2
+
+* Fix memory leak on Android devices.
+* Update Sample.
+
 ## 1.2.1
 
 * Fix wrong name file.
