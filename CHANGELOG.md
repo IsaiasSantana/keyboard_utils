@@ -1,3 +1,7 @@
+## 1.2.3
+
+* Fixes  MissingPluginException on Flutter Web.
+
 ## 1.2.2
 
 * Fix memory leak on Android devices.
