@@ -10,8 +10,10 @@ import 'keyboard_options.dart';
 
 class KeyboardUtils {
   KeyboardUtils() {
-    if(!kIsWeb) _keyboardSubscription ??=
-        _eventChannel.receiveBroadcastStream().listen(_onKeyboardListener);
+    if (!kIsWeb) {
+      _keyboardSubscription ??=
+          _eventChannel.receiveBroadcastStream().listen(_onKeyboardListener);
+    }
   }
 
   static const EventChannel _eventChannel = EventChannel('keyboard_utils');
