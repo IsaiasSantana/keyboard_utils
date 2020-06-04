@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,7 +10,7 @@ import 'keyboard_options.dart';
 
 class KeyboardUtils {
   KeyboardUtils() {
-    _keyboardSubscription ??=
+    if(!kIsWeb) _keyboardSubscription ??=
         _eventChannel.receiveBroadcastStream().listen(_onKeyboardListener);
   }
 
