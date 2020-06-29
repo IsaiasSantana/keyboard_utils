@@ -1,15 +1,8 @@
 package br.com.keyboard_utils.manager
 
 import android.app.Activity
-import android.graphics.drawable.ColorDrawable
 import android.os.CountDownTimer
-import android.os.Handler
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
-import android.widget.PopupWindow
-import br.com.keyboard_utils.R
 
 /**
  * Created by Wilson Martins on 2019-10-25.
@@ -20,10 +13,6 @@ interface KeyboardUtils {
 
     fun dispose()
 
-    fun registerKeyboardListener()
-
-    fun registerKeyboardSettings()
-
     fun handleKeyboard()
 
     fun onKeyboardOpen(action: (height: Int) -> Unit)
@@ -31,13 +20,10 @@ interface KeyboardUtils {
     fun onKeyboardClose(action: () -> Unit)
 }
 
-class KeyboardUtilsImpl(private val activity: Activity) : PopupWindow(activity), KeyboardUtils {
-
-    // keyboard popup view
-    private val keyboardView: View
+class KeyboardUtilsImpl(private val activity: Activity) : KeyboardUtils {
 
     // screen parent view
-    private var parentView: View
+    private var parentView: View = activity.findViewById(android.R.id.content)
 
     // keyboard action listeners -> this objects will call when KeyboardUtils handle keyboard
     // open event or close event;
@@ -60,20 +46,7 @@ class KeyboardUtilsImpl(private val activity: Activity) : PopupWindow(activity),
     private var keyboardSessionTimer: CountDownTimer? = null
 
     init {
-        val inflator = activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        this.keyboardView = inflator.inflate(R.layout.teclado_popup, null, false)
-
-        // define this content view as keyboard view
-        contentView = keyboardView
-
-        // creates THE MAGIC!
-        deviceDimensionsManager = DeviceDimesionsImpl(activity, keyboardView)
-
-        // set keyboard popup settings
-        registerKeyboardSettings()
-        parentView = activity.findViewById(android.R.id.content)
-
-        // MAGIC MAGIC
+        deviceDimensionsManager = DeviceDimesionsImpl(activity, parentView)
         handleKeyboard()
     }
 
@@ -83,7 +56,7 @@ class KeyboardUtilsImpl(private val activity: Activity) : PopupWindow(activity),
                 keyboardSessionHeights.max()?.let {
                     if (it > 0 && lastKeyboardHeight != it) {
                         var statusBar = 0
-                        var alturaFinal = it
+                        var finalHeight = it
                         val resources = activity.resources
                         val resourceId = resources.getIdentifier(
                                 "status_bar_height", "dimen", "android")
@@ -91,11 +64,11 @@ class KeyboardUtilsImpl(private val activity: Activity) : PopupWindow(activity),
                             statusBar = resources.getDimensionPixelSize(resourceId)
                         }
                         if (statusBar > 100) {
-                            alturaFinal += statusBar
+                            finalHeight += statusBar
                         }
-                        keyboardOpenedEvent(alturaFinal)
+                        keyboardOpenedEvent(finalHeight)
                         lastKeyboardHeight = -1
-                    } else if (it == 0) {
+                    } else if (it <= 0) {
                         keyboardClosedEvent()
                     }
                     keyboardOpened = false
@@ -110,42 +83,25 @@ class KeyboardUtilsImpl(private val activity: Activity) : PopupWindow(activity),
                 keyboardSessionHeights.add(alturaTecladoCalculada)
             }
         }
-
-        keyboardView.viewTreeObserver?.addOnGlobalLayoutListener {
-            if (!keyboardOpened || keyboardSessionHeights.size == 0 && keyboardOpened) {
-                keyboardOpened = true
-                keyboardSessionTimer?.start()
-
-            }
-        }
     }
 
     override fun start() {
-        Handler().postDelayed({
-            if (!isShowing && parentView.windowToken != null) {
-                setBackgroundDrawable(ColorDrawable(0))
-                showAtLocation(parentView, Gravity.NO_GRAVITY, 0, 0)
-            }
-        }, 100)
+        registerKeyboardListener()
     }
 
     override fun dispose() {
-        dismiss()
+        parentView.viewTreeObserver.removeOnGlobalLayoutListener {  }
+        keyboardSessionTimer?.cancel()
     }
 
-    override fun registerKeyboardSettings() {
-        softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-        inputMethodMode = INPUT_METHOD_NEEDED
 
-        width = 0
-        height = WindowManager.LayoutParams.MATCH_PARENT
-    }
 
-    override fun registerKeyboardListener() {
-        keyboardView.viewTreeObserver?.addOnGlobalLayoutListener {
+    private fun registerKeyboardListener() {
+        parentView.viewTreeObserver?.addOnGlobalLayoutListener {
             if (!keyboardOpened || keyboardSessionHeights.size == 0 && keyboardOpened) {
                 keyboardOpened = true
                 keyboardSessionTimer?.start()
+
             }
         }
     }

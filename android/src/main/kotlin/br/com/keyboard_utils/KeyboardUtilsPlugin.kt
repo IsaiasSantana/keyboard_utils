@@ -30,6 +30,7 @@ class KeyboardUtilsPlugin : FlutterPlugin, ActivityAware, EventChannel.StreamHan
         this.activity = activity
 
         if (this.activity != null) {
+            keyboardUtil?.dispose()
             keyboardUtil = KeyboardUtilsImpl(this.activity!!)
             keyboardUtil?.start()
         }
@@ -56,7 +57,7 @@ class KeyboardUtilsPlugin : FlutterPlugin, ActivityAware, EventChannel.StreamHan
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         this.flutterPluginBinding = binding
-        setup( null, binding.binaryMessenger);
+        setup(null, binding.binaryMessenger)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
