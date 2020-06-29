@@ -1,3 +1,7 @@
+## 1.2.4
+
+* Fixes keyboard change on Android devices.
+
 ## 1.2.3
 
 * Fixes  MissingPluginException on Flutter Web.
