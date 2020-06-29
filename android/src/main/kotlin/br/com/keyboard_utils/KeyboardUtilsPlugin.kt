@@ -20,12 +20,20 @@ class KeyboardUtilsPlugin : FlutterPlugin, ActivityAware, EventChannel.StreamHan
     private var activity: Activity? = null
     private var eventChannel: EventChannel? = null
 
-    private fun setup(activity: Activity, messenger: BinaryMessenger) {
-        eventChannel = EventChannel(messenger, CHANNEL_IDENTIFIER)
-        eventChannel?.setStreamHandler(this)
+
+    private fun setup(activity: Activity?, messenger: BinaryMessenger) {
+        if (eventChannel == null) {
+            eventChannel = EventChannel(messenger, CHANNEL_IDENTIFIER)
+            eventChannel?.setStreamHandler(this)
+        }
+
         this.activity = activity
-        keyboardUtil = KeyboardUtilsImpl(activity)
-        keyboardUtil?.start()
+
+        if (this.activity != null) {
+            keyboardUtil?.dispose()
+            keyboardUtil = KeyboardUtilsImpl(this.activity!!)
+            keyboardUtil?.start()
+        }
     }
 
     private fun tearDown() {
@@ -49,6 +57,7 @@ class KeyboardUtilsPlugin : FlutterPlugin, ActivityAware, EventChannel.StreamHan
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         this.flutterPluginBinding = binding
+        setup(null, binding.binaryMessenger)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
