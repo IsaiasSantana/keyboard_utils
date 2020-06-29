@@ -93,9 +93,7 @@ class KeyboardUtilsImpl(private val activity: Activity) : KeyboardUtils {
         parentView.viewTreeObserver.removeOnGlobalLayoutListener {  }
         keyboardSessionTimer?.cancel()
     }
-
-
-
+    
     private fun registerKeyboardListener() {
         parentView.viewTreeObserver?.addOnGlobalLayoutListener {
             if (!keyboardOpened || keyboardSessionHeights.size == 0 && keyboardOpened) {
