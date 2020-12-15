@@ -8,7 +8,7 @@ A Flutter plugin to check keyboard visibility and height.
 
 ## Install
 
-Follow this [guide](https://pub.dev/packages/keyboard_utils/#-installing-tab-) 
+Follow this [guide](https://pub.dev/packages/keyboard_utils/install) 
 
 ## How to use
 
