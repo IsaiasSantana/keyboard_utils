@@ -4,8 +4,8 @@ class KeyboardListener {
   KeyboardListener({this.willShowKeyboard, this.willHideKeyboard});
 
   /// It is called when the keyboard appears.
-  final Function(double) willShowKeyboard;
+  final Function(double?)? willShowKeyboard;
 
   /// It is called when the keyboard disappears.
-  final Function willHideKeyboard;
+  final Function? willHideKeyboard;
 }
