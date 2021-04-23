@@ -4,7 +4,7 @@ import 'package:keyboard_utils/keyboard_options.dart';
 import 'package:keyboard_utils/keyboard_utils.dart';
 
 class KeyboardAware extends StatefulWidget {
-  const KeyboardAware({@required this.builder});
+  const KeyboardAware({required this.builder});
 
   final Widget Function(
       BuildContext context, KeyboardOptions configuracaoTeclado) builder;
@@ -15,7 +15,7 @@ class KeyboardAware extends StatefulWidget {
 
 class _KeyboardAwareState extends State<KeyboardAware> {
   final KeyboardUtils _keyboardUtils = KeyboardUtils();
-  int _idKeyboardListener;
+  int? _idKeyboardListener;
 
   @override
   void initState() {
