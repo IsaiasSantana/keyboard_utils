@@ -40,12 +40,6 @@ class KeyboardUtils {
     }
   }
 
-  static void _updateKeyboardOptionsWith({
-    required KeyboardOptions? newKeyboardOptions,
-  }) {
-    KeyboardUtils._keyboardOptions = newKeyboardOptions;
-  }
-
   KeyboardOptions? _decodeDataToKeyboardOptions({required Object? data}) {
     if (data != null && data is String) {
       try {
@@ -56,6 +50,12 @@ class KeyboardUtils {
       }
     }
     return null;
+  }
+
+  static void _updateKeyboardOptionsWith({
+    required KeyboardOptions? newKeyboardOptions,
+  }) {
+    KeyboardUtils._keyboardOptions = newKeyboardOptions;
   }
 
   void _notifyListenersWith({required KeyboardOptions keyboardOptions}) {
