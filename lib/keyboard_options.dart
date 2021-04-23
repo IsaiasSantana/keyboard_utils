@@ -1,5 +1,5 @@
 class KeyboardOptions {
-  KeyboardOptions({this.isKeyboardOpen, this.keyboardHeight});
+  KeyboardOptions({required this.isKeyboardOpen, required this.keyboardHeight});
 
   final bool isKeyboardOpen;
   final double keyboardHeight;

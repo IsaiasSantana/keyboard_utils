@@ -1,3 +1,6 @@
+## 1.3.0
+
+* Update to null-safety
 ## 1.2.4
 
 * Fixes keyboard change on Android devices.

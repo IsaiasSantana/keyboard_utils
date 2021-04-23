@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'keyboard_listener.dart';
@@ -18,12 +17,12 @@ class KeyboardUtils {
 
   static const EventChannel _eventChannel = EventChannel('keyboard_utils');
 
-  static StreamSubscription _keyboardSubscription;
+  static StreamSubscription? _keyboardSubscription;
 
   static Map<int, KeyboardListener> _listenersKeyboardEvents =
       Map<int, KeyboardListener>();
 
-  static KeyboardOptions _keyboardOptions;
+  static KeyboardOptions? _keyboardOptions;
 
   /// the current height of the keyboard. if keyboard is closed, the height is 0.0.
   double get keyboardHeight => _keyboardOptions?.keyboardHeight ?? 0.0;
@@ -31,14 +30,66 @@ class KeyboardUtils {
   /// the current state of the keyboard. It is false if keyboard was not open for the first time.
   bool get isKeyboardOpen => _keyboardOptions?.isKeyboardOpen ?? false;
 
+  void _onKeyboardListener(Object? data) {
+    final keyboardOptions = _decodeDataToKeyboardOptions(data: data);
+    KeyboardUtils._updateKeyboardOptionsWith(
+      newKeyboardOptions: keyboardOptions,
+    );
+    if (keyboardOptions != null) {
+      _notifyListenersWith(keyboardOptions: keyboardOptions);
+    }
+  }
+
+  KeyboardOptions? _decodeDataToKeyboardOptions({required Object? data}) {
+    if (data != null && data is String) {
+      try {
+        final Map<String, dynamic> keyboardOptionsMap = jsonDecode(data);
+        return KeyboardOptions.fromJson(keyboardOptionsMap);
+      } catch (_) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  static void _updateKeyboardOptionsWith({
+    required KeyboardOptions? newKeyboardOptions,
+  }) {
+    KeyboardUtils._keyboardOptions = newKeyboardOptions;
+  }
+
+  void _notifyListenersWith({required KeyboardOptions keyboardOptions}) {
+    for (final KeyboardListener listener in _listenersKeyboardEvents.values) {
+      if (keyboardOptions.isKeyboardOpen) {
+        _notifyWillShowKeyboardTo(
+          listener: listener,
+          keyboardHeight: keyboardOptions.keyboardHeight,
+        );
+      } else {
+        _notifyWillHideKeyboardTo(listener: listener);
+      }
+    }
+  }
+
+  void _notifyWillShowKeyboardTo({
+    required KeyboardListener listener,
+    required double keyboardHeight,
+  }) {
+    if (listener.willShowKeyboard != null) {
+      listener.willShowKeyboard!(keyboardHeight);
+    }
+  }
+
+  void _notifyWillHideKeyboardTo({required KeyboardListener listener}) {
+    if (listener.willHideKeyboard != null) {
+      listener.willHideKeyboard!();
+    }
+  }
+
   /// Subscribe to a keyboard event.
   /// [listener] object to listen the event.
   /// Returns a subscribing id that can be used to unsubscribe.
-  int add({@required KeyboardListener listener}) {
-    if (listener == null) {
-      throw Exception('The listener cannot be null.');
-    }
-
+  int add({required KeyboardListener listener}) {
     final int length = _listenersKeyboardEvents.length;
     _listenersKeyboardEvents[length] = listener;
     return length;
@@ -46,7 +97,7 @@ class KeyboardUtils {
 
   /// Unsubscribe from the keyboard visibility events
   /// [subscribingId] An id previously returned on add
-  bool unsubscribeListener({@required int subscribingId}) {
+  bool unsubscribeListener({required int? subscribingId}) {
     if (subscribingId == null) {
       return false;
     }
@@ -71,37 +122,15 @@ class KeyboardUtils {
     _listenersKeyboardEvents.clear();
   }
 
-  void _onKeyboardListener(Object data) {
-    if (data != null && data is String) {
-      try {
-        final Map<String, dynamic> keyboardOptionsMap = jsonDecode(data);
-        _keyboardOptions = KeyboardOptions.fromJson(keyboardOptionsMap);
-
-        _listenersKeyboardEvents.forEach((_, final KeyboardListener listener) {
-          if (_keyboardOptions.isKeyboardOpen &&
-              listener.willShowKeyboard != null) {
-            listener.willShowKeyboard(_keyboardOptions.keyboardHeight);
-            return;
-          }
-
-          if (!_keyboardOptions.isKeyboardOpen &&
-              listener.willHideKeyboard != null) {
-            listener.willHideKeyboard();
-          }
-        });
-      } on dynamic catch (_) {}
+  ///  function to clear class on dispose.
+  void dispose() {
+    if (canCallDispose()) {
+      _keyboardSubscription?.cancel().catchError((e) {});
+      _keyboardSubscription = null;
     }
   }
 
   bool canCallDispose() {
     return _listenersKeyboardEvents.isEmpty;
-  }
-
-  ///  function to clear class on dispose.
-  void dispose() {
-    if (canCallDispose()) {
-      _keyboardSubscription?.cancel()?.catchError((e) {});
-      _keyboardSubscription = null;
-    }
   }
 }
