@@ -32,9 +32,18 @@ class KeyboardUtils {
 
   void _onKeyboardListener(Object? data) {
     final keyboardOptions = _decodeDataToKeyboardOptions(data: data);
+    KeyboardUtils._updateKeyboardOptionsWith(
+      newKeyboardOptions: keyboardOptions,
+    );
     if (keyboardOptions != null) {
       _notifyListenersWith(keyboardOptions: keyboardOptions);
     }
+  }
+
+  static void _updateKeyboardOptionsWith({
+    required KeyboardOptions? newKeyboardOptions,
+  }) {
+    KeyboardUtils._keyboardOptions = newKeyboardOptions;
   }
 
   KeyboardOptions? _decodeDataToKeyboardOptions({required Object? data}) {
