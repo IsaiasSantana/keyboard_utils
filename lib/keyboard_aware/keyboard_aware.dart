@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide KeyboardListener;
 import 'package:keyboard_utils/keyboard_listener.dart';
 import 'package:keyboard_utils/keyboard_options.dart';
 import 'package:keyboard_utils/keyboard_utils.dart';
