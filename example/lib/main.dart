@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:keyboard_utils/keyboard_utils.dart';
-import 'package:keyboard_utils/keyboard_listener.dart';
+import 'package:keyboard_utils/keyboard_listener.dart' as keyboard_listener;
 import 'package:keyboard_utils/widgets.dart';
 
 void main() => runApp(MyApp());
@@ -20,7 +20,7 @@ class KeyboardBloc {
 
   void start() {
     _idKeyboardListener = _keyboardUtils.add(
-        listener: KeyboardListener(willHideKeyboard: () {
+        listener: keyboard_listener.KeyboardListener(willHideKeyboard: () {
       _streamController.sink.add(_keyboardUtils.keyboardHeight);
     }, willShowKeyboard: (double keyboardHeight) {
       _streamController.sink.add(keyboardHeight);
