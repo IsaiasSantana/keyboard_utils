@@ -1,9 +1,15 @@
+## 1.3.2
+
+* Fixed https://github.com/IsaiasSantana/keyboard_utils/issues/40
+
 ## 1.3.1
 
 * Handle file name conflict with the new Flutter 2.5.0
+
 ## 1.3.0
 
 * Update to null-safety
+
 ## 1.2.4
 
 * Fixes keyboard change on Android devices.
