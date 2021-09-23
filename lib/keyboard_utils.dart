@@ -10,8 +10,7 @@ import 'keyboard_options.dart';
 class KeyboardUtils {
   KeyboardUtils() {
     if (!kIsWeb) {
-      _keyboardSubscription ??=
-          _eventChannel.receiveBroadcastStream().listen(_onKeyboardListener);
+      _keyboardSubscription ??= _eventChannel.receiveBroadcastStream().listen(_onKeyboardListener);
     }
   }
 
@@ -19,8 +18,9 @@ class KeyboardUtils {
 
   static StreamSubscription? _keyboardSubscription;
 
-  static Map<int, KeyboardListener> _listenersKeyboardEvents =
-      Map<int, KeyboardListener>();
+  static int _count = 0;
+
+  static Map<int, KeyboardListener> _listenersKeyboardEvents = Map<int, KeyboardListener>();
 
   static KeyboardOptions? _keyboardOptions;
 
@@ -90,9 +90,8 @@ class KeyboardUtils {
   /// [listener] object to listen the event.
   /// Returns a subscribing id that can be used to unsubscribe.
   int add({required KeyboardListener listener}) {
-    final int length = _listenersKeyboardEvents.length;
-    _listenersKeyboardEvents[length] = listener;
-    return length;
+    _listenersKeyboardEvents[_count++] = listener;
+    return _count;
   }
 
   /// Unsubscribe from the keyboard visibility events
