@@ -90,8 +90,8 @@ class KeyboardUtils {
   /// [listener] object to listen the event.
   /// Returns a subscribing id that can be used to unsubscribe.
   int add({required KeyboardListener listener}) {
-    _listenersKeyboardEvents[_count++] = listener;
-    return _count;
+    _listenersKeyboardEvents[_count] = listener;
+    return _count++;
   }
 
   /// Unsubscribe from the keyboard visibility events
