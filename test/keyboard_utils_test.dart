@@ -13,7 +13,6 @@ void main() {
   late final keyboardUtils = KeyboardUtils();
 
   tearDown(() {
-    print("ola");
     keyboardUtils.removeAllKeyboardListeners();
   });
 
