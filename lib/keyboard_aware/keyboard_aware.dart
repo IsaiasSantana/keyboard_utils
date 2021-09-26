@@ -38,10 +38,14 @@ class _KeyboardAwareState extends State<KeyboardAware> {
     _idKeyboardListener = _keyboardUtils.add(
       listener: KeyboardListener(
         willHideKeyboard: () {
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
         },
         willShowKeyboard: (double keyboardHeight) {
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
         },
       ),
     );
