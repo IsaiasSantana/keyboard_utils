@@ -1,3 +1,6 @@
+## 1.3.3
+* Fixed https://github.com/IsaiasSantana/keyboard_utils/pull/42
+
 ## 1.3.2
 
 * Fixed https://github.com/IsaiasSantana/keyboard_utils/issues/40
