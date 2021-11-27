@@ -53,7 +53,7 @@ class KeyboardUtilsImpl(private val activity: Activity) : KeyboardUtils {
     override fun handleKeyboard() {
         keyboardSessionTimer = object : CountDownTimer(150, 1) {
             override fun onFinish() {
-                keyboardSessionHeights.max()?.let {
+                keyboardSessionHeights.maxOrNull()?.let {
                     if (it > 0 && lastKeyboardHeight != it) {
                         var statusBar = 0
                         var finalHeight = it
