@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:keyboard_utils_example/main.dart';
+import '../lib/main.dart';
 
 void main() {
   testWidgets('Verify Platform version', (WidgetTester tester) async {
@@ -19,7 +19,7 @@ void main() {
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>
-            widget is Text && widget.data.startsWith('Running on:'),
+            widget is Text && true == widget.data?.startsWith('Running on:'),
       ),
       findsOneWidget,
     );
